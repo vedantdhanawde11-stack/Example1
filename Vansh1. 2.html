@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0F2027">
+  <title>Vansh 1.2</title>
+
+  <!-- Google Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VANSH 1.2 - 3D GLASS THEME & SYSTEM STYLES
+       ========================================================================== */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%);
+      --glass-panel: rgba(255, 255, 255, 0.12);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+      --box-3d-shadow: 0 10px 22px rgba(0, 0, 0, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      
+      /* 3D Jewel Tones */
+      --card-amber-3d: linear-gradient(145deg, #FF6B6B, #FFE66D);
+      --card-emerald-3d: linear-gradient(145deg, #11998E, #38EF7D);
+      --card-purple-3d: linear-gradient(145deg, #8A2387, #E94057, #F27121);
+      --card-cyan-3d: linear-gradient(145deg, #00B4DB, #0083B0);
+      --card-rose-3d: linear-gradient(145deg, #FF416C, #FF4B2B);
+
+      --wa-teal: #075E54;
+      --wa-chat-sent: #D1F2D9;
+      --wa-chat-received: #FFFFFF;
+      --tick-blue: #34B7F1;
+      --tick-grey: #8696A0;
+      
+      --text-light: #F8F9FA;
+      --text-muted: #CBD5E1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-light);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .screen.active { display: flex; }
+    .hidden { display: none !important; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn-primary { background: linear-gradient(135deg, #11998E, #38EF7D); color: white; }
+    .btn-danger { background: linear-gradient(135deg, #FF416C, #FF4B2B); color: white; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.2); color: white; backdrop-filter: blur(8px); }
+    .btn-biometric { background: linear-gradient(135deg, #4A00E0, #8E2DE2); color: white; margin-top: 8px; }
+    .btn-full { width: 100%; }
+
+    /* -------------------------------------------------------------------------
+       1. Lock Screen (Password Eye + Biometrics)
+       ------------------------------------------------------------------------- */
+    #login-screen {
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      background: radial-gradient(circle at center, #1A2980 0%, #26D0CE 100%);
+      z-index: 9999;
+    }
+
+    .login-3d-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 100%;
+      max-width: 350px;
+      padding: 30px 24px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: var(--glass-shadow);
+    }
+
+    .app-brand-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(to right, #FFE000, #799F0C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-grid-3d {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 22px 0;
+    }
+
+    .profile-card-3d {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 16px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--box-3d-shadow);
+      transition: all 0.25s ease;
+    }
+    .profile-card-3d.selected {
+      border-color: #38EF7D;
+      background: rgba(56, 239, 125, 0.25);
+      transform: translateY(-4px);
+    }
+    .profile-avatar-img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    /* Password Input with Eye Icon */
+    .password-input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .glass-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      padding: 12px 42px 12px 14px;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+    .glass-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+    .password-eye-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    /* -------------------------------------------------------------------------
+       2. Top Headers
+       ------------------------------------------------------------------------- */
+    .top-glass-bar {
+      background: rgba(15, 32, 39, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      color: white;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* -------------------------------------------------------------------------
+       3. 3D Glass Cards & Countdown Widgets
+       ------------------------------------------------------------------------- */
+    .content-scrollable {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-3d {
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+      box-shadow: var(--box-3d-shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .card-amber { background: var(--card-amber-3d); color: #1E293B; }
+    .card-emerald { background: var(--card-emerald-3d); color: #042F2E; }
+    .card-purple { background: var(--card-purple-3d); color: white; }
+    .card-cyan { background: var(--card-cyan-3d); color: white; }
+    .card-rose { background: var(--card-rose-3d); color: white; }
+    .card-glass { background: var(--glass-panel); color: white; }
+
+    /* Multiple Countdown Timer Rows */
+    .countdown-timer-box {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .time-slot-3d {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 8px 4px;
+    }
+    .time-slot-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFE66D;
+      display: block;
+    }
+    .time-slot-lbl { font-size: 9px; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+
+    /* -------------------------------------------------------------------------
+       4. 24-HOUR CAMERA-ONLY GALLERY
+       ------------------------------------------------------------------------- */
+    .story-card-inshot {
+      background: #000;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+      margin-top: 10px;
+      position: relative;
+    }
+    .story-header-meta {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    .story-media-view {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+    .story-caption-bar {
+      padding: 12px 14px;
+      background: rgba(18, 18, 18, 0.95);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* -------------------------------------------------------------------------
+       5. WhatsApp-Style Chat (Glowing DP, Online Status, Messages)
+       ------------------------------------------------------------------------- */
+    .chat-header-3d {
+      background: rgba(7, 94, 84, 0.9);
+      backdrop-filter: blur(16px);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      position: relative;
+    }
+    
+    .chat-avatar-wrapper {
+      position: relative;
+      cursor: pointer;
+    }
+    .chat-header-dp {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      display: block;
+      transition: all 0.3s;
+    }
+    .chat-header-dp.online-glow {
+      box-shadow: 0 0 14px #25D366;
+      border-color: #25D366;
+      animation: avatarPulse 1.8s infinite;
+    }
+    @keyframes avatarPulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px #25D366); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 0 10px #25D366); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 2px #25D366); }
+    }
+
+    .online-indicator-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      background: #25D366;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: none;
+    }
+    .online-indicator-dot.active { display: block; }
+
+    .chat-user-meta { flex: 1; }
+    .chat-user-meta h3 { font-size: 15px; font-weight: 700; color: white; }
+    .chat-user-meta .status-text { font-size: 11px; color: #A7FFEB; transition: all 0.3s; }
+    .chat-user-meta .status-text.offline { color: #CFD8DC; }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #EFEAE2;
+      color: #111B21;
+    }
+    .message {
+      max-width: 82%;
+      padding: 8px 12px 6px;
+      border-radius: 12px;
+      font-size: 14px;
+      word-wrap: break-word;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      user-select: none;
+    }
+    .message.sent { background: var(--wa-chat-sent); align-self: flex-end; border-top-right-radius: 2px; }
+    .message.received { background: var(--wa-chat-received); align-self: flex-start; border-top-left-radius: 2px; }
+    .message.deleted-msg { font-style: italic; color: var(--tick-grey); }
+    .message img { width: 100%; border-radius: 8px; margin-top: 4px; max-height: 220px; object-fit: cover; }
+    
+    .ephemeral-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: #D81B60;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .msg-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--tick-grey);
+      margin-top: 2px;
+    }
+
+    .chat-bar {
+      background: #F0F2F5;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-input-pill {
+      flex: 1;
+      background: white;
+      border-radius: 24px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chat-input-pill input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #111;
+    }
+
+    /* -------------------------------------------------------------------------
+       6. Pure White Action Popups (WhatsApp Style)
+       ------------------------------------------------------------------------- */
+    .white-action-popup {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      background: #FFFFFF !important;
+      color: #111827 !important;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 18px 16px;
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.35);
+      z-index: 10000;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .white-action-popup.active { display: flex; }
+    .popup-item-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #1F2937;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .popup-item-btn:hover { background: #F3F4F6; }
+    .popup-item-btn.danger { color: #DC2626; }
+
+    /* -------------------------------------------------------------------------
+       7. Memory Vault & Bucket List Cards
+       ------------------------------------------------------------------------- */
+    .memory-card-3d {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--box-3d-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bucket-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .bucket-item-row.done span {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    /* -------------------------------------------------------------------------
+       8. Persistent Bottom Navigation Bar
+       ------------------------------------------------------------------------- */
+    .bottom-tabs-3d {
+      background: rgba(15, 32, 39, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      height: 60px;
+      flex-shrink: 0;
+      z-index: 900;
+    }
+    .tab-action {
+      flex: 1;
+      border: none;
+      background: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 11px;
+      gap: 3px;
+      cursor: pointer;
+    }
+    .tab-action.active {
+      color: #38EF7D;
+      font-weight: 700;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Hearts Portal -->
+  <div id="heart-portal"></div>
+
+  <!-- Fullscreen Photo Lightbox -->
+  <div id="photo-lightbox" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.92);z-index:99999;display:none;align-items:center;justify-content:center;" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="Full view" style="max-width:95%; max-height:90%; border-radius:12px;">
+  </div>
+
+  <!-- Hidden DP File Uploader -->
+  <input type="file" id="dp-upload-input" accept="image/*" hidden onchange="handleDpUpload(this)">
+
+  <!-- =========================================================================
+       SCREEN 1: LOGIN (MR & MRS ONLY + PASSWORD EYE + BIOMETRICS)
+       ========================================================================= -->
+  <div id="login-screen" class="screen active">
+    <div class="login-3d-box">
+      <div style="font-size: 40px; margin-bottom: 4px;">💍</div>
+      <h1 class="app-brand-title">Vansh 1.2</h1>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Private Couple Portal</p>
+
+      <div class="profile-grid-3d">
+        <div class="profile-card-3d" id="card-mr" onclick="selectUser('mr')">
+          <img id="login-avatar-mr" src="https://api.dicebear.com/7.x/bottts/svg?seed=mr" class="profile-avatar-img" alt="Mr">
+          <span style="font-weight: 700; font-size: 15px;">Mr</span>
+        </div>
+        <div class="profile-card-3d" id="card-mrs" onclick="selectUser('mrs')">
+          <img id="login-avatar-mrs" src="https://api.dicebear.com/7.x/bottts/svg?seed=mrs" class="profile-avatar-img" alt="Mrs">
+          <span style="font-weight: 700; font-size: 15px;">Mrs</span>
+        </div>
+      </div>
+
+      <div id="pin-section" class="hidden">
+        <!-- Password Field with Show/Hide Eye Toggle -->
+        <div class="password-input-group">
+          <input type="password" id="pass-input" class="glass-input" placeholder="Enter Secret Password" autocomplete="off">
+          <button type="button" class="password-eye-btn" onclick="togglePasswordVisibility()" title="Toggle visibility">
+            <span class="material-icons" id="eye-icon">visibility</span>
+          </button>
+        </div>
+        
+        <button type="button" class="btn btn-primary btn-full" onclick="authenticatePassword()">
+          <span class="material-icons">lock_open</span> Unlock Vansh 1.2
+        </button>
+
+        <button type="button" class="btn btn-biometric btn-full" id="btn-biometric-auth" onclick="authenticateBiometrics()">
+          <span class="material-icons">fingerprint</span> Fingerprint / Face Unlock
+        </button>
+
+        <p id="auth-error-msg" style="color: #FF6B6B; font-size: 12px; margin-top: 8px;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 2: HOME DASHBOARD (MULTIPLE COUNTDOWNS & 24H CAMERA STORY)
+       ========================================================================= -->
+  <div id="home-screen" class="screen">
+    <header class="top-glass-bar">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img id="home-user-dp" src="" class="profile-avatar-img" style="width:40px; height:40px;" onclick="triggerDpPicker()" title="Tap to change your profile picture">
+        <div>
+          <h2 id="home-greeting" style="font-size:16px;">Vansh 1.2</h2>
+          <span style="font-size:11px; color:#38EF7D;">Connected</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="icon-btn" onclick="triggerLovePing()" title="Love Ping & Buzz"><span class="material-icons" style="color:#FF416C;">favorite</span></button>
+        <button class="icon-btn" onclick="openAddCountdownModal()" title="Add Countdown"><span class="material-icons">more_time</span></button>
+        <button class="icon-btn" onclick="performLogout()" title="Lock"><span class="material-icons">lock</span></button>
+      </div>
+    </header>
+
+    <main class="content-scrollable">
+      <!-- MULTIPLE COUNTDOWN TIMERS CONTAINER -->
+      <div id="countdowns-list-container" style="display:flex; flex-direction:column; gap:14px;"></div>
+
+      <!-- DAILY STREAK CARD -->
+      <div class="card-3d card-amber">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div id="flame-avatar" style="font-size:32px;">🔥</div>
+          <div>
+            <h3 id="streak-number" style="font-size:22px; font-weight:800;">0 Days</h3>
+            <p id="streak-state-desc" style="font-size:12px;">Snap today's 24h photo to glow.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMERA-ONLY 24H STORY CREATOR (SNAP STYLE) -->
+      <div class="card-3d card-emerald">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:16px; font-weight:700;">Live 24h Snap Gallery</h3>
+          <span class="material-icons">photo_camera</span>
+        </div>
+        <p style="font-size:12px; margin-bottom:12px; opacity:0.9;">Snap real-time photo with camera only. Automatically deleted in 24 hours.</p>
+
+        <!-- STRICT Camera Only Trigger -->
+        <label class="btn btn-secondary btn-full" for="camera-snap-input" style="background:rgba(0,0,0,0.25); border:2px dashed rgba(255,255,255,0.4);">
+          <span class="material-icons">camera_alt</span> Take Live Snap
+          <input type="file" id="camera-snap-input" accept="image/*" capture="environment" hidden onchange="handleCameraSnap(this)">
+        </label>
+
+        <!-- Snap Preview & Caption Form -->
+        <div id="snap-preview-box" class="hidden" style="margin-top:12px;">
+          <img id="snap-preview-img" src="" alt="Snap" style="width:100%; border-radius:12px; max-height:260px; object-fit:cover;">
+          <input type="text" id="snap-caption-input" class="glass-input" placeholder="Add a caption..." style="margin-top:8px; background:rgba(0,0,0,0.3);">
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-danger" style="flex:1;" onclick="cancelSnap()">Cancel</button>
+            <button class="btn btn-primary" style="flex:2;" onclick="publishCameraSnap()">Share 24h Snap</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE 24H STORIES FEED -->
+      <div class="card-3d card-glass">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:15px; font-weight:700;">Active 24h Snaps</h3>
+          <span style="font-size:11px; color:#38EF7D;">Auto-deletes in 24h</span>
+        </div>
+        <div id="stories-feed-container"></div>
+      </div>
+    </main>
+
+    <!-- Navigation Tabs -->
+    <nav class="bottom-tabs-3d">
+      <button class="tab-action active" onclick="navigate('home')"><span class="material-icons">home</span>Home</button>
+      <button class="tab-action" onclick="navigate('chat')"><span class="material-icons">chat</span>Chat</button>
+      <button class="tab-action" onclick="navigate('memories')"><span class="material-icons">auto_stories</span>Vault</button>
+      <button class="tab-action" onclick="navigate('bucket')"><span class="material-icons">checklist</span>Bucket</button>
+      <button class="tab-action" onclick="navigate('settings')"><span class="material-icons">settings</span>Settings</button>
+    </nav>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 3: CHAT (REALTIME GLOWING DP & WHITE POPUP)
+       ========================================================================= -->
+  <div id="chat-screen" class="screen">
+    <header class="chat-header-3d">
+      <button class="icon-btn" onclick="navigate('home')"><span class="material-icons">arrow_back</span></button>
+      
+      <!-- Partner Avatar with Glow & Tap DP Picker -->
+      <div class="chat-avatar-wrapper" onclick="triggerDpPicker()" title="Tap to change Profile Picture">
+        <img id="chat-partner-dp" src="" class="chat-header-dp" alt="DP">
+        <div id="chat-online-dot" class="online-indicator-dot"></div>
+      </div>
+
+      <div class="chat-user-meta">
+        <h3 id="chat-partner-name">Partner</h3>
+        <span id="chat-partner-status" class="status-text offline">Offline</span>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="icon-btn" onclick="initiateWebRTCCall('audio')" title="Voice Call"><span class="material-icons">call</span></button>
+        <button class="icon-btn" onclick="initiateWebRTCCall('video')" title="Video Call"><span class="material-icons">videocam</span></button>
+      </div>
+    </header>
+
+    <main id="chat-messages-container" class="chat-messages"></main>
+
+    <footer class="chat-bar">
+      <div class="chat-input-pill">
+        <label for="chat-file-input" class="icon-btn" style="color:#667781; width:auto; border:none; background:none;">
+          <span class="material-icons">attach_file</span>
+          <input type="file" id="chat-file-input" accept="image/*,video/*" hidden onchange="sendChatMedia(this)">
+        </label>
+        <input type="text" id="chat-input-field" placeholder="Message..." autocomplete="off" onkeydown="onChatKey(event)">
+      </div>
+      <button class="icon-btn" style="background:#128C7E; border-radius:50%;" onclick="submitChatMessage()"><span class="material-icons">send</span></button>
+    </footer>
+
+    <!-- Navigation Tabs -->
+    <nav class="bottom-tabs-3d">
+      <button class="tab-action" onclick="navigate('home')"><span class="material-icons">home</span>Home</button>
+      <button class="tab-action active" onclick="navigate('chat')"><span class="material-icons">chat</span>Chat</button>
+      <button class="tab-action" onclick="navigate('memories')"><span class="material-icons">auto_stories</span>Vault</button>
+      <button class="tab-action" onclick="navigate('bucket')"><span class="material-icons">checklist</span>Bucket</button>
+      <button class="tab-action" onclick="navigate('settings')"><span class="material-icons">settings</span>Settings</button>
+    </nav>
+  </div>
+
+  <!-- WHITE-COLORED POPUP MENU FOR CHAT MESSAGES -->
+  <div id="white-msg-popup" class="white-action-popup">
+    <div style="font-size:12px; font-weight:700; color:#6B7280; text-transform:uppercase; margin-bottom:4px; padding-left:4px;">Message Options</div>
+    
+    <button type="button" class="popup-item-btn" id="btn-popup-save-media" onclick="toggleSaveChatMedia()">
+      <span class="material-icons" style="color:#2563EB;">bookmark</span>
+      <span id="lbl-popup-save-media">Save in Chat (Prevent 24h Deletion)</span>
+    </button>
+    
+    <button type="button" class="popup-item-btn" id="btn-popup-edit" onclick="startEditSelectedMsg()">
+      <span class="material-icons" style="color:#10B981;">edit</span>
+      <span>Edit Message</span>
+    </button>
+
+    <button type="button" class="popup-item-btn" onclick="copySelectedMsg()">
+      <span class="material-icons" style="color:#4B5563;">content_copy</span>
+      <span>Copy Text</span>
+    </button>
+
+    <button type="button" class="popup-item-btn danger" onclick="deleteSelectedMsg('for_me')">
+      <span class="material-icons">delete</span>
+      <span>Delete for Me</span>
+    </button>
+
+    <button type="button" class="popup-item-btn danger" id="btn-popup-delete-everyone" onclick="deleteSelectedMsg('for_everyone')">
+      <span class="material-icons">delete_forever</span>
+      <span>Delete for Everyone</span>
+    </button>
+
+    <button type="button" class="popup-item-btn" style="background:#E5E7EB; justify-content:center; font-weight:600;" onclick="closeWhitePopup()">
+      Cancel
+    </button>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 4: LIFETIME MEMORIES VAULT (NO CAMERA REQUIRED)
+       ========================================================================= -->
+  <div id="memories-screen" class="screen">
+    <header class="top-glass-bar">
+      <h2>Lifetime Memory Vault</h2>
+      <button class="icon-btn" onclick="navigate('home')"><span class="material-icons">close</span></button>
+    </header>
+    <main class="content-scrollable">
+      <div class="card-3d card-glass">
+        <h4 style="font-size:14px; margin-bottom:8px;">Add Memory from Gallery or Notes</h4>
+        <input type="date" id="vault-date-input" class="glass-input">
+        <input type="text" id="vault-title-input" class="glass-input" placeholder="Title (e.g. Goa Trip, Anniversary Dinner)">
+        <textarea id="vault-note-input" class="glass-input" rows="2" placeholder="Write description or feelings..."></textarea>
+        
+        <!-- Standard Gallery / File Picker (NO CAMERA FORCED) -->
+        <label class="btn btn-secondary btn-full" for="vault-gallery-file">
+          <span class="material-icons">photo_library</span> Choose Photo from Gallery
+          <input type="file" id="vault-gallery-file" accept="image/*,video/*" hidden onchange="handleVaultMedia(this)">
+        </label>
+        <div id="vault-preview-box" class="hidden" style="margin-top:8px;">
+          <img id="vault-preview-img" src="" alt="Preview" style="width:100%; border-radius:10px; max-height:180px; object-fit:cover;">
+        </div>
+
+        <button class="btn btn-primary btn-full" style="margin-top:8px;" onclick="saveVaultMemory()"><span class="material-icons">save</span> Save to Vault</button>
+      </div>
+
+      <div style="font-size:14px; font-weight:700; margin-top:6px;">Archived Vault Moments</div>
+      <div id="vault-items-container"></div>
+    </main>
+    
+    <!-- Navigation Tabs -->
+    <nav class="bottom-tabs-3d">
+      <button class="tab-action" onclick="navigate('home')"><span class="material-icons">home</span>Home</button>
+      <button class="tab-action" onclick="navigate('chat')"><span class="material-icons">chat</span>Chat</button>
+      <button class="tab-action active" onclick="navigate('memories')"><span class="material-icons">auto_stories</span>Vault</button>
+      <button class="tab-action" onclick="navigate('bucket')"><span class="material-icons">checklist</span>Bucket</button>
+      <button class="tab-action" onclick="navigate('settings')"><span class="material-icons">settings</span>Settings</button>
+    </nav>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 5: COUPLE BUCKET LIST & DATE PLANNER (NEW)
+       ========================================================================= -->
+  <div id="bucket-screen" class="screen">
+    <header class="top-glass-bar">
+      <h2>Couple Bucket List</h2>
+      <button class="icon-btn" onclick="navigate('home')"><span class="material-icons">close</span></button>
+    </header>
+    <main class="content-scrollable">
+      <div class="card-3d card-rose">
+        <h3 style="font-size:15px; font-weight:700;">Add Shared Goal or Date Idea</h3>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <input type="text" id="bucket-item-input" class="glass-input" placeholder="e.g. Candlelight dinner, Paris trip, Watch sunrise" style="margin-bottom:0;">
+          <button class="btn btn-primary" onclick="addBucketItem()"><span class="material-icons">add</span></button>
+        </div>
+      </div>
+
+      <div class="card-3d card-glass">
+        <h4 style="font-size:14px; font-weight:700; margin-bottom:8px;">Our Goals & Plans</h4>
+        <div id="bucket-items-container"></div>
+      </div>
+    </main>
+    
+    <!-- Navigation Tabs -->
+    <nav class="bottom-tabs-3d">
+      <button class="tab-action" onclick="navigate('home')"><span class="material-icons">home</span>Home</button>
+      <button class="tab-action" onclick="navigate('chat')"><span class="material-icons">chat</span>Chat</button>
+      <button class="tab-action" onclick="navigate('memories')"><span class="material-icons">auto_stories</span>Vault</button>
+      <button class="tab-action active" onclick="navigate('bucket')"><span class="material-icons">checklist</span>Bucket</button>
+      <button class="tab-action" onclick="navigate('settings')"><span class="material-icons">settings</span>Settings</button>
+    </nav>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 6: SETTINGS & COUNTDOWN MANAGEMENT
+       ========================================================================= -->
+  <div id="settings-screen" class="screen">
+    <header class="top-glass-bar">
+      <h2>Settings</h2>
+      <button class="icon-btn" onclick="navigate('home')"><span class="material-icons">close</span></button>
+    </header>
+    <main class="content-scrollable">
+      <div class="card-3d card-cyan">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:15px; font-weight:700;">Manage Countdowns</h3>
+          <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="openAddCountdownModal()">+ Add New</button>
+        </div>
+        <p style="font-size:12px; margin-top:4px;">Add multiple countdowns for anniversaries, birthdays, or trips.</p>
+        <div id="settings-countdown-list" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+
+      <div class="card-3d card-glass">
+        <h3 style="font-size:15px; font-weight:700;">Change Profile Picture (DP)</h3>
+        <button class="btn btn-secondary btn-full" onclick="triggerDpPicker()" style="margin-top:8px;"><span class="material-icons">account_circle</span> Pick New Photo</button>
+      </div>
+
+      <div class="card-3d card-glass">
+        <h3 style="font-size:15px; font-weight:700;">Biometric Fingerprint / Face</h3>
+        <button class="btn btn-biometric btn-full" onclick="registerBiometrics()" style="margin-top:8px;"><span class="material-icons">fingerprint</span> Register Device Biometrics</button>
+      </div>
+
+      <div class="card-3d card-glass">
+        <button class="btn btn-danger btn-full" onclick="performLogout()"><span class="material-icons">lock</span> Lock Vansh 1.2</button>
+      </div>
+    </main>
+
+    <!-- Navigation Tabs -->
+    <nav class="bottom-tabs-3d">
+      <button class="tab-action" onclick="navigate('home')"><span class="material-icons">home</span>Home</button>
+      <button class="tab-action" onclick="navigate('chat')"><span class="material-icons">chat</span>Chat</button>
+      <button class="tab-action" onclick="navigate('memories')"><span class="material-icons">auto_stories</span>Vault</button>
+      <button class="tab-action" onclick="navigate('bucket')"><span class="material-icons">checklist</span>Bucket</button>
+      <button class="tab-action active" onclick="navigate('settings')"><span class="material-icons">settings</span>Settings</button>
+    </nav>
+  </div>
+
+  <!-- WHITE-COLORED POPUP FOR ADDING / EDITING COUNTDOWN -->
+  <div id="white-countdown-modal" class="white-action-popup">
+    <h3 id="modal-cd-heading" style="font-size:16px; font-weight:700; color:#111;">Add Special Countdown</h3>
+    <input type="hidden" id="modal-cd-id">
+    <input type="text" id="modal-cd-title" class="glass-input" placeholder="Title (e.g. Our 3rd Anniversary)" style="background:#F3F4F6; color:#111; border:1px solid #D1D5DB; margin-top:8px;">
+    <input type="datetime-local" id="modal-cd-date" class="glass-input" style="background:#F3F4F6; color:#111; border:1px solid #D1D5DB;">
+    
+    <div style="display:flex; gap:8px; margin-top:4px;">
+      <button type="button" class="btn btn-secondary" style="flex:1; background:#E5E7EB; color:#111;" onclick="closeCountdownModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" style="flex:2;" onclick="saveCountdownFromModal()">Save Countdown</button>
+    </div>
+  </div>
+
+  <!-- WEBRTC FULLSCREEN CALL OVERLAY -->
+  <div id="call-interface" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:99999;display:none;flex-direction:column;">
+    <div style="position:relative;flex:1;width:100%;height:100%;">
+      <video id="remote-video" autoplay playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+      <video id="local-video" autoplay playsinline muted style="position:absolute;top:20px;right:20px;width:100px;height:150px;border-radius:12px;border:2px solid white;object-fit:cover;z-index:10;"></video>
+      <div style="position:absolute;bottom:30px;left:0;width:100%;display:flex;justify-content:center;gap:20px;">
+        <button class="btn btn-danger" style="border-radius:50%;width:56px;height:56px;" onclick="hangupCall()"><span class="material-icons">call_end</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       FIREBASE SDKs (COMPAT MODE V10)
+       ========================================================================= -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+  <!-- =========================================================================
+       JAVASCRIPT APPLICATION CONTROLLER
+       ========================================================================= -->
+  <script>
+    /* 1. FIREBASE CONFIGURATION */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRxvqL67OLgjQsig5Ecu0cPKoVIhZSfy0",
+      authDomain: "aravedu-couple30.firebaseapp.com",
+      projectId: "aravedu-couple30",
+      storageBucket: "aravedu-couple30.firebasestorage.app",
+      messagingSenderId: "1039357466069",
+      appId: "1:1039357466069:web:c4144d2fd07ecc310e595c",
+      measurementId: "G-M5G21F35QG"
+    };
+
+    let isFirebaseReady = false;
+    let db, storage;
+    const appBroadcast = new BroadcastChannel("vansh_app_sync");
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      storage = firebase.storage();
+      db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+      isFirebaseReady = true;
+    } catch (e) {
+      console.warn("Offline Fallback:", e);
+    }
+
+    /* 2. AUTHENTICATION (MR & MRS ONLY) */
+    const APP_USERS = {
+      mr: { id: "mr", name: "Mr", pass: "Aravedu@vedh", defaultAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=mr" },
+      mrs: { id: "mrs", name: "Mrs", pass: "Aravedu@Aaru", defaultAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=mrs" }
+    };
+
+    let currentUser = null;
+    let selectedProfileId = null;
+    let activeSnapBlob = null;
+    let activeVaultBlob = null;
+
+    let selectedMsgId = null;
+    let selectedMsgData = null;
+    let isEditingMsg = false;
+
+    let peerConnection = null, localStream = null, remoteStream = null, currentCallId = null;
+    let presenceInterval = null;
+
+    function selectUser(userId) {
+      selectedProfileId = userId;
+      document.querySelectorAll(".profile-card-3d").forEach(c => c.classList.remove("selected"));
+      document.getElementById(userId === 'mr' ? 'card-mr' : 'card-mrs').classList.add("selected");
+      document.getElementById("pin-section").classList.remove("hidden");
+      document.getElementById("pass-input").value = "";
+      document.getElementById("auth-error-msg").textContent = "";
+      document.getElementById("pass-input").focus();
+
+      const hasBio = localStorage.getItem(`bio_${userId}`);
+      document.getElementById("btn-biometric-auth").style.display = hasBio ? "inline-flex" : "none";
+    }
+
+    /* Password Eye Visibility Toggle */
+    function togglePasswordVisibility() {
+      const input = document.getElementById("pass-input");
+      const icon = document.getElementById("eye-icon");
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "visibility_off";
+      } else {
+        input.type = "password";
+        icon.textContent = "visibility";
+      }
+    }
+
+    function authenticatePassword() {
+      const entered = document.getElementById("pass-input").value.trim();
+      if (APP_USERS[selectedProfileId] && APP_USERS[selectedProfileId].pass === entered) {
+        currentUser = APP_USERS[selectedProfileId];
+        localStorage.setItem("vansh_active_user", currentUser.id);
+        startApp();
+      } else {
+        document.getElementById("auth-error-msg").textContent = "Incorrect password for " + APP_USERS[selectedProfileId].name;
+      }
+    }
+
+    async function registerBiometrics() {
+      if (!window.PublicKeyCredential) { alert("Requires HTTPS or localhost."); return; }
+      try {
+        const challenge = new Uint8Array(32);
+        crypto.getRandomValues(challenge);
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "Vansh 1.2" },
+            user: { id: new TextEncoder().encode(currentUser.id), name: currentUser.name, displayName: currentUser.name },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            timeout: 60000
+          }
+        });
+        if (cred) {
+          localStorage.setItem(`bio_${currentUser.id}`, "true");
+          alert("Fingerprint / Face unlock registered successfully!");
+        }
+      } catch (e) { alert("Registration cancelled."); }
+    }
+
+    async function authenticateBiometrics() {
+      if (!selectedProfileId) return;
+      try {
+        const challenge = new Uint8Array(32);
+        crypto.getRandomValues(challenge);
+        const assertion = await navigator.credentials.get({
+          publicKey: { challenge, userVerification: "required", timeout: 60000 }
+        });
+        if (assertion) {
+          currentUser = APP_USERS[selectedProfileId];
+          localStorage.setItem("vansh_active_user", currentUser.id);
+          startApp();
+        }
+      } catch (e) {
+        document.getElementById("auth-error-msg").textContent = "Biometric check failed. Enter password.";
+      }
+    }
+
+    function lockApp() {
+      setOnlinePresence(false);
+      currentUser = null;
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("login-screen").classList.add("active");
+      document.getElementById("pass-input").value = "";
+      const saved = localStorage.getItem("vansh_active_user");
+      if (saved) selectUser(saved);
+    }
+
+    function performLogout() {
+      setOnlinePresence(false);
+      localStorage.removeItem("vansh_active_user");
+      lockApp();
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (currentUser) setOnlinePresence(document.visibilityState === "visible");
+    });
+    window.addEventListener("beforeunload", () => {
+      if (currentUser) setOnlinePresence(false);
+    });
+
+    function startApp() {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById("home-screen").classList.add("active");
+      document.getElementById("home-greeting").textContent = `Vansh • ${currentUser.name} ❤️`;
+      document.getElementById("chat-partner-name").textContent = getPartner().name;
+
+      initDpSyncEngine();
+      setOnlinePresence(true);
+      listenToPartnerPresence();
+      initMultipleCountdowns();
+      listenTo24hSnaps();
+      listenToChat();
+      listenToMemories();
+      listenToBucketList();
+    }
+
+    function getPartner() {
+      return currentUser.id === 'mr' ? APP_USERS.mrs : APP_USERS.mr;
+    }
+
+    function getTodayKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    /* 3. ROBUST NAVIGATION ENGINE */
+    function navigate(tabName) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".tab-action").forEach(t => t.classList.remove("active"));
+
+      const target = document.getElementById(`${tabName}-screen`);
+      if (target) target.classList.add("active");
+
+      document.querySelectorAll(`.tab-action`).forEach(btn => {
+        const text = btn.textContent.toLowerCase();
+        if (text.includes(tabName === 'memories' ? 'vault' : tabName)) {
+          btn.classList.add("active");
+        }
+      });
+
+      if (tabName === 'chat') { scrollChatToBottom(); markIncomingMessagesAsRead(); }
+      if (tabName === 'memories') listenToMemories();
+      if (tabName === 'bucket') listenToBucketList();
+      if (tabName === 'settings') loadSettingsForm();
+    }
+
+    /* 4. REALTIME ONLINE / OFFLINE PRESENCE */
+    async function setOnlinePresence(isOnline) {
+      if (!currentUser) return;
+      const data = { isOnline, lastSeen: Date.now() };
+      if (isFirebaseReady) {
+        try {
+          await db.collection("presence").doc(currentUser.id).set(data, { merge: true });
+        } catch(e) {}
+      } else {
+        localStorage.setItem(`presence_${currentUser.id}`, JSON.stringify(data));
+        appBroadcast.postMessage({ type: "presence_change" });
+      }
+    }
+
+    function listenToPartnerPresence() {
+      const partner = getPartner();
+      const dotEl = document.getElementById("chat-online-dot");
+      const statusEl = document.getElementById("chat-partner-status");
+      const dpEl = document.getElementById("chat-partner-dp");
+
+      function updateStatus(isOnline, lastSeen) {
+        const active = isOnline && (Date.now() - lastSeen < 45000);
+        if (active) {
+          dpEl.classList.add("online-glow");
+          dotEl.classList.add("active");
+          statusEl.textContent = "Online";
+          statusEl.classList.remove("offline");
+        } else {
+          dpEl.classList.remove("online-glow");
+          dotEl.classList.remove("active");
+          const time = lastSeen ? new Date(lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+          statusEl.textContent = time ? `Last seen ${time}` : "Offline";
+          statusEl.classList.add("offline");
+        }
+      }
+
+      if (isFirebaseReady) {
+        db.collection("presence").doc(partner.id).onSnapshot(doc => {
+          if (!doc.exists) return;
+          const d = doc.data();
+          updateStatus(d.isOnline, d.lastSeen);
+        });
+      }
+
+      if (presenceInterval) clearInterval(presenceInterval);
+      presenceInterval = setInterval(() => {
+        if (currentUser && document.visibilityState === "visible") setOnlinePresence(true);
+        if (!isFirebaseReady) {
+          const raw = localStorage.getItem(`presence_${partner.id}`);
+          if (raw) {
+            const p = JSON.parse(raw);
+            updateStatus(p.isOnline, p.lastSeen);
+          }
+        }
+      }, 15000);
+    }
+
+    /* 5. BULLETPROOF REAL-TIME PROFILE PICTURE (DP) SYNC ENGINE */
+    function triggerDpPicker() {
+      document.getElementById("dp-upload-input").click();
+    }
+
+    function handleDpUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+
+      // Compress and resize client-side to ensure 100% upload success
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = async () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = 240;
+          canvas.height = 240;
+          ctx.drawImage(img, 0, 0, 240, 240);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+          // Update locally
+          localStorage.setItem(`dp_${currentUser.id}`, dataUrl);
+          updateAvatarElements(currentUser.id, dataUrl);
+
+          // Update in Firebase Realtime Firestore Document
+          if (isFirebaseReady) {
+            try {
+              await db.collection("users").doc(currentUser.id).set({ dpUrl: dataUrl }, { merge: true });
+            } catch (err) { console.warn("Firestore DP save note:", err); }
+          }
+          appBroadcast.postMessage({ type: "dp_update", userId: currentUser.id, url: dataUrl });
+          alert("Profile photo updated & synced!");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      input.value = "";
+    }
+
+    function initDpSyncEngine() {
+      const myDp = localStorage.getItem(`dp_${currentUser.id}`) || currentUser.defaultAvatar;
+      updateAvatarElements(currentUser.id, myDp);
+
+      const partner = getPartner();
+      const partnerDp = localStorage.getItem(`dp_${partner.id}`) || partner.defaultAvatar;
+      updateAvatarElements(partner.id, partnerDp);
+
+      // Realtime listener for partner's DP
+      if (isFirebaseReady) {
+        db.collection("users").doc(partner.id).onSnapshot(doc => {
+          if (doc.exists && doc.data().dpUrl) {
+            const url = doc.data().dpUrl;
+            localStorage.setItem(`dp_${partner.id}`, url);
+            updateAvatarElements(partner.id, url);
+          }
+        });
+      }
+    }
+
+    function updateAvatarElements(userId, url) {
+      if (currentUser && userId === currentUser.id) {
+        const homeDp = document.getElementById("home-user-dp");
+        if (homeDp) homeDp.src = url;
+      } else {
+        const chatPartnerDp = document.getElementById("chat-partner-dp");
+        if (chatPartnerDp) chatPartnerDp.src = url;
+      }
+      const loginMr = document.getElementById("login-avatar-mr");
+      const loginMrs = document.getElementById("login-avatar-mrs");
+      if (userId === "mr" && loginMr) loginMr.src = url;
+      if (userId === "mrs" && loginMrs) loginMrs.src = url;
+    }
+
+    /* 6. MULTIPLE COUNTDOWNS (ADD, EDIT, DELETE & LIVE TICKING) */
+    let countdownTicker = null;
+
+    function openAddCountdownModal(editId = null) {
+      document.getElementById("modal-cd-id").value = editId || "";
+      document.getElementById("modal-cd-heading").textContent = editId ? "Edit Countdown" : "Add Special Countdown";
+
+      if (editId) {
+        const raw = JSON.parse(localStorage.getItem("vansh_countdowns") || "[]");
+        const found = raw.find(c => c.id === editId);
+        if (found) {
+          document.getElementById("modal-cd-title").value = found.title;
+          document.getElementById("modal-cd-date").value = found.date;
+        }
+      } else {
+        document.getElementById("modal-cd-title").value = "";
+        document.getElementById("modal-cd-date").value = "";
+      }
+      document.getElementById("white-countdown-modal").classList.add("active");
+    }
+
+    function closeCountdownModal() {
+      document.getElementById("white-countdown-modal").classList.remove("active");
+    }
+
+    async function saveCountdownFromModal() {
+      const id = document.getElementById("modal-cd-id").value;
+      const title = document.getElementById("modal-cd-title").value.trim();
+      const date = document.getElementById("modal-cd-date").value;
+
+      if (!title || !date) { alert("Please provide both title and date."); return; }
+
+      const raw = JSON.parse(localStorage.getItem("vansh_countdowns") || "[]");
+      if (id) {
+        const item = raw.find(c => c.id === id);
+        if (item) { item.title = title; item.date = date; }
+      } else {
+        raw.push({ id: `cd_${Date.now()}`, title, date, createdBy: currentUser.id });
+      }
+
+      localStorage.setItem("vansh_countdowns", JSON.stringify(raw));
+      if (isFirebaseReady) {
+        try { await db.collection("system").doc("countdowns").set({ items: raw }); } catch(e){}
+      }
+      closeCountdownModal();
+      renderCountdowns(raw);
+    }
+
+    async function deleteCountdown(id) {
+      if (confirm("Delete this countdown?")) {
+        let raw = JSON.parse(localStorage.getItem("vansh_countdowns") || "[]");
+        raw = raw.filter(c => c.id !== id);
+        localStorage.setItem("vansh_countdowns", JSON.stringify(raw));
+        if (isFirebaseReady) {
+          try { await db.collection("system").doc("countdowns").set({ items: raw }); } catch(e){}
+        }
+        renderCountdowns(raw);
+      }
+    }
+
+    function initMultipleCountdowns() {
+      if (isFirebaseReady) {
+        db.collection("system").doc("countdowns").onSnapshot(doc => {
+          if (!doc.exists) return;
+          const items = doc.data().items || [];
+          localStorage.setItem("vansh_countdowns", JSON.stringify(items));
+          renderCountdowns(items);
+        });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_countdowns") || "[]");
+        if (raw.length === 0) {
+          raw.push({ id: "cd_default", title: "Our Anniversary", date: "2026-12-31T00:00:00", createdBy: "mr" });
+          localStorage.setItem("vansh_countdowns", JSON.stringify(raw));
+        }
+        renderCountdowns(raw);
+      }
+    }
+
+    function renderCountdowns(items) {
+      const container = document.getElementById("countdowns-list-container");
+      const settingsBox = document.getElementById("settings-countdown-list");
+      container.innerHTML = "";
+      if (settingsBox) settingsBox.innerHTML = "";
+
+      const colors = ["card-purple", "card-cyan", "card-rose"];
+
+      items.forEach((item, idx) => {
+        const colorClass = colors[idx % colors.length];
+        const card = document.createElement("div");
+        card.className = `card-3d ${colorClass}`;
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size:15px; font-weight:700;">${escapeHtml(item.title)}</h3>
+            <div style="display:flex; gap:6px;">
+              <span class="material-icons" style="font-size:18px; cursor:pointer;" onclick="openAddCountdownModal('${item.id}')">edit</span>
+              <span class="material-icons" style="font-size:18px; cursor:pointer;" onclick="deleteCountdown('${item.id}')">close</span>
+            </div>
+          </div>
+          <div class="countdown-timer-box" data-target="${item.date}">
+            <div class="time-slot-3d"><span class="time-slot-val cd-d">0</span><span class="time-slot-lbl">Days</span></div>
+            <div class="time-slot-3d"><span class="time-slot-val cd-h">00</span><span class="time-slot-lbl">Hours</span></div>
+            <div class="time-slot-3d"><span class="time-slot-val cd-m">00</span><span class="time-slot-lbl">Mins</span></div>
+            <div class="time-slot-3d"><span class="time-slot-val cd-s">00</span><span class="time-slot-lbl">Secs</span></div>
+          </div>
+        `;
+        container.appendChild(card);
+
+        if (settingsBox) {
+          const row = document.createElement("div");
+          row.style.display = "flex";
+          row.style.justifyContent = "space-between";
+          row.style.padding = "6px 0";
+          row.innerHTML = `<span><strong>${escapeHtml(item.title)}</strong> (${new Date(item.date).toLocaleDateString()})</span><span style="color:#DC2626; cursor:pointer;" onclick="deleteCountdown('${item.id}')">Delete</span>`;
+          settingsBox.appendChild(row);
+        }
+      });
+
+      startCountdownTicker();
+    }
+
+    function startCountdownTicker() {
+      if (countdownTicker) clearInterval(countdownTicker);
+      function tick() {
+        document.querySelectorAll(".countdown-timer-box").forEach(box => {
+          const targetStr = box.getAttribute("data-target");
+          if (!targetStr) return;
+          const diff = new Date(targetStr).getTime() - Date.now();
+
+          if (diff <= 0) {
+            box.querySelector(".cd-d").textContent = "0";
+            box.querySelector(".cd-h").textContent = "00";
+            box.querySelector(".cd-m").textContent = "00";
+            box.querySelector(".cd-s").textContent = "00";
+            return;
+          }
+
+          box.querySelector(".cd-d").textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
+          box.querySelector(".cd-h").textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          box.querySelector(".cd-m").textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          box.querySelector(".cd-s").textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        });
+      }
+      tick();
+      countdownTicker = setInterval(tick, 1000);
+    }
+
+    /* 7. CAMERA-ONLY 24H LIVE STORY (SNAP STYLE) */
+    function handleCameraSnap(input) {
+      if (input.files && input.files[0]) {
+        activeSnapBlob = input.files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById("snap-preview-img").src = e.target.result;
+          document.getElementById("snap-preview-box").classList.remove("hidden");
+        };
+        reader.readAsDataURL(activeSnapBlob);
+      }
+    }
+
+    function cancelSnap() {
+      activeSnapBlob = null;
+      document.getElementById("snap-preview-box").classList.add("hidden");
+      document.getElementById("camera-snap-input").value = "";
+    }
+
+    async function publishCameraSnap() {
+      if (!activeSnapBlob) return;
+      const caption = document.getElementById("snap-caption-input").value.trim();
+      const now = Date.now();
+      const expiresAt = now + (24 * 60 * 60 * 1000);
+
+      const reader = new FileReader();
+      reader.onload = async e => {
+        const dataUrl = e.target.result;
+        const snapObj = {
+          authorId: currentUser.id,
+          authorName: currentUser.name,
+          caption,
+          mediaUrl: dataUrl,
+          createdAt: now,
+          expiresAt,
+          dateStr: new Date().toLocaleDateString([], { month: 'short', day: 'numeric' }),
+          timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        if (isFirebaseReady) {
+          try { await db.collection("snaps_24h").add(snapObj); } catch(err){}
+        } else {
+          const raw = JSON.parse(localStorage.getItem("vansh_snaps") || "[]");
+          snapObj.id = `snap_${now}`;
+          raw.push(snapObj);
+          localStorage.setItem("vansh_snaps", JSON.stringify(raw));
+          renderSnapsList(raw);
+        }
+
+        alert("24h Snap shared successfully!");
+        cancelSnap();
+        document.getElementById("snap-caption-input").value = "";
+      };
+      reader.readAsDataURL(activeSnapBlob);
+    }
+
+    function listenTo24hSnaps() {
+      const now = Date.now();
+      if (isFirebaseReady) {
+        db.collection("snaps_24h").onSnapshot(snap => {
+          const list = [];
+          snap.forEach(d => {
+            const data = d.data();
+            if (data.expiresAt <= Date.now()) {
+              d.ref.delete();
+            } else {
+              list.push({ id: d.id, ...data });
+            }
+          });
+          list.sort((a,b) => b.createdAt - a.createdAt);
+          renderSnapsList(list);
+        });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_snaps") || "[]");
+        const active = raw.filter(s => s.expiresAt > now);
+        localStorage.setItem("vansh_snaps", JSON.stringify(active));
+        renderSnapsList(active);
+      }
+    }
+
+    function renderSnapsList(snaps) {
+      const container = document.getElementById("stories-feed-container");
+      container.innerHTML = "";
+      if (snaps.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin-top:6px;">No snaps yet today. Be the first to snap!</p>`;
+        return;
+      }
+
+      snaps.forEach(snap => {
+        const hoursLeft = Math.max(1, Math.round((snap.expiresAt - Date.now()) / (1000 * 60 * 60)));
+        const card = document.createElement("div");
+        card.className = "story-card-inshot";
+        card.innerHTML = `
+          <div class="story-header-meta">
+            <span style="font-size:12px; font-weight:700;">${snap.authorId === 'mr' ? '🤵 Mr' : '👰 Mrs'} • ${snap.timeStr}</span>
+            <span style="background:#E91E63; border-radius:12px; font-size:10px; padding:3px 8px; font-weight:700;">⏱️ ${hoursLeft}h left</span>
+          </div>
+          <img src="${snap.mediaUrl}" class="story-media-view" onclick="openLightbox('${snap.mediaUrl}')">
+          <div class="story-caption-bar">
+            ${snap.caption ? `<p style="font-size:13px; color:white;">${escapeHtml(snap.caption)}</p>` : ''}
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; color:#888;">${snap.dateStr}</span>
+              <button class="btn btn-primary" style="padding:6px 12px; font-size:11px;" onclick="downloadAndVaultSnap('${snap.mediaUrl}', '${encodeURIComponent(snap.caption || '')}', '${snap.dateStr}', '${snap.timeStr}')">
+                <span class="material-icons" style="font-size:14px;">cloud_download</span> Save to Vault
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function downloadAndVaultSnap(url, encodedCap, dateStr, timeStr) {
+      const caption = decodeURIComponent(encodedCap);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Vansh_Snap_${Date.now()}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      const mem = {
+        date: getTodayKey(),
+        title: `Snap from ${dateStr} (${timeStr})`,
+        note: caption,
+        mediaUrl: url,
+        authorId: currentUser.id,
+        authorName: currentUser.name,
+        status: "active",
+        createdAt: Date.now()
+      };
+
+      if (isFirebaseReady) {
+        await db.collection("lifetime_memories").add({ ...mem, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_vault") || "[]");
+        mem.id = `mem_${Date.now()}`;
+        raw.push(mem);
+        localStorage.setItem("vansh_vault", JSON.stringify(raw));
+      }
+
+      alert("Saved permanently to Vault & Downloaded!");
+    }
+
+    /* 8. CHAT (WHATSAPP WHITE POPUP & 24H EPHEMERAL PHOTOS) */
+    function listenToChat() {
+      if (isFirebaseReady) {
+        db.collection("messages").orderBy("timestamp", "asc").limitToLast(100).onSnapshot(snap => {
+          const list = [];
+          snap.forEach(d => {
+            const data = d.data();
+            if (data.isEphemeral && !data.savedInChat && data.expiresAt < Date.now()) {
+              d.ref.delete();
+            } else {
+              list.push({ id: d.id, ...data });
+            }
+          });
+          renderChatMessages(list);
+          if (document.getElementById("chat-screen").classList.contains("active")) markIncomingMessagesAsRead();
+        });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_chat") || "[]");
+        const active = raw.filter(m => !(m.isEphemeral && !m.savedInChat && m.expiresAt < Date.now()));
+        renderChatMessages(active);
+      }
+    }
+
+    function renderChatMessages(messages) {
+      const box = document.getElementById("chat-messages-container");
+      box.innerHTML = "";
+
+      messages.forEach(msg => {
+        if (msg.hiddenFor && msg.hiddenFor.includes(currentUser.id)) return;
+        const isMe = msg.senderId === currentUser.id;
+        const bubble = document.createElement("div");
+        bubble.className = `message ${isMe ? 'sent' : 'received'}`;
+
+        bubble.addEventListener("click", () => openWhiteMsgPopup(msg.id, msg));
+        bubble.addEventListener("contextmenu", e => { e.preventDefault(); openWhiteMsgPopup(msg.id, msg); });
+
+        let body = '';
+        if (msg.isDeleted) {
+          body += `<div>🚫 This message was deleted</div>`;
+        } else {
+          if (msg.text) body += `<div>${escapeHtml(msg.text)}</div>`;
+          if (msg.mediaUrl) {
+            body += `<img src="${msg.mediaUrl}" onclick="event.stopPropagation(); openLightbox('${msg.mediaUrl}')">`;
+            if (msg.isEphemeral && !msg.savedInChat) {
+              body += `<div class="ephemeral-badge"><span class="material-icons" style="font-size:12px;">timer</span> Disappears in 24h</div>`;
+            }
+          }
+        }
+
+        body += `<div class="msg-meta">`;
+        if (msg.isEdited) body += `<span style="font-style:italic;">(edited) </span>`;
+        body += `<span>${msg.timeStr || ''}</span>`;
+        if (isMe && !msg.isDeleted) {
+          if (msg.status === 'read') body += `<span class="material-icons" style="font-size:15px; color:#34B7F1;">done_all</span>`;
+          else if (msg.status === 'delivered') body += `<span class="material-icons" style="font-size:15px; color:#8696A0;">done_all</span>`;
+          else body += `<span class="material-icons" style="font-size:15px; color:#8696A0;">done</span>`;
+        }
+        body += `</div>`;
+
+        bubble.innerHTML = body;
+        box.appendChild(bubble);
+      });
+      scrollChatToBottom();
+    }
+
+    async function submitChatMessage() {
+      const input = document.getElementById("chat-input-field");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      if (isEditingMsg && selectedMsgId) {
+        if (isFirebaseReady) {
+          await db.collection("messages").doc(selectedMsgId).update({ text, isEdited: true });
+        } else {
+          const raw = JSON.parse(localStorage.getItem("vansh_chat") || "[]");
+          const m = raw.find(i => i.id === selectedMsgId);
+          if (m) { m.text = text; m.isEdited = true; }
+          localStorage.setItem("vansh_chat", JSON.stringify(raw));
+          renderChatMessages(raw);
+        }
+        isEditingMsg = false;
+        selectedMsgId = null;
+      } else {
+        const msg = {
+          senderId: currentUser.id,
+          senderName: currentUser.name,
+          text,
+          timeStr,
+          status: "sent",
+          timestamp: Date.now()
+        };
+
+        if (isFirebaseReady) {
+          await db.collection("messages").add({ ...msg, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        } else {
+          const raw = JSON.parse(localStorage.getItem("vansh_chat") || "[]");
+          msg.id = `msg_${Date.now()}`;
+          raw.push(msg);
+          localStorage.setItem("vansh_chat", JSON.stringify(raw));
+          renderChatMessages(raw);
+        }
+      }
+      scrollChatToBottom();
+    }
+
+    function onChatKey(e) { if (e.key === "Enter") submitChatMessage(); }
+
+    async function sendChatMedia(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const expiresAt = Date.now() + (24 * 60 * 60 * 1000);
+
+      const reader = new FileReader();
+      reader.onload = async e => {
+        const dataUrl = e.target.result;
+        const msgObj = {
+          senderId: currentUser.id,
+          senderName: currentUser.name,
+          mediaUrl: dataUrl,
+          isEphemeral: true,
+          savedInChat: false,
+          expiresAt,
+          timeStr,
+          status: "sent",
+          timestamp: Date.now()
+        };
+
+        if (isFirebaseReady) {
+          await db.collection("messages").add({ ...msgObj, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        } else {
+          const raw = JSON.parse(localStorage.getItem("vansh_chat") || "[]");
+          msgObj.id = `msg_${Date.now()}`;
+          raw.push(msgObj);
+          localStorage.setItem("vansh_chat", JSON.stringify(raw));
+          renderChatMessages(raw);
+        }
+      };
+      reader.readAsDataURL(file);
+      input.value = "";
+    }
+
+    /* WHITE POPUP CONTROLS */
+    function openWhiteMsgPopup(id, data) {
+      selectedMsgId = id;
+      selectedMsgData = data;
+      const popup = document.getElementById("white-msg-popup");
+      const editBtn = document.getElementById("btn-popup-edit");
+      const delEveryBtn = document.getElementById("btn-popup-delete-everyone");
+      const saveMediaBtn = document.getElementById("btn-popup-save-media");
+      const saveMediaLbl = document.getElementById("lbl-popup-save-media");
+
+      if (data.senderId === currentUser.id && !data.isDeleted) {
+        editBtn.style.display = data.text ? "flex" : "none";
+        delEveryBtn.style.display = "flex";
+      } else {
+        editBtn.style.display = "none";
+        delEveryBtn.style.display = "none";
+      }
+
+      if (data.mediaUrl) {
+        saveMediaBtn.style.display = "flex";
+        saveMediaLbl.textContent = data.savedInChat ? "Saved in Chat (Permanent)" : "Save in Chat (Keep Forever)";
+      } else {
+        saveMediaBtn.style.display = "none";
+      }
+
+      popup.classList.add("active");
+    }
+
+    function closeWhitePopup() {
+      document.getElementById("white-msg-popup").classList.remove("active");
+    }
+
+    async function toggleSaveChatMedia() {
+      if (!selectedMsgId) return;
+      const newState = !selectedMsgData.savedInChat;
+      if (isFirebaseReady) {
+        await db.collection("messages").doc(selectedMsgId).update({ savedInChat: newState });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_chat") || "[]");
+        const m = raw.find(i => i.id === selectedMsgId);
+        if (m) m.savedInChat = newState;
+        localStorage.setItem("vansh_chat", JSON.stringify(raw));
+        renderChatMessages(raw);
+      }
+      alert(newState ? "Photo saved in chat permanently!" : "Photo set to expire in 24 hours.");
+      closeWhitePopup();
+    }
+
+    function startEditSelectedMsg() {
+      if (!selectedMsgData) return;
+      isEditingMsg = true;
+      const input = document.getElementById("chat-input-field");
+      input.value = selectedMsgData.text || "";
+      input.focus();
+      closeWhitePopup();
+    }
+
+    function copySelectedMsg() {
+      if (selectedMsgData?.text) {
+        navigator.clipboard.writeText(selectedMsgData.text);
+        alert("Text copied!");
+      }
+      closeWhitePopup();
+    }
+
+    async function deleteSelectedMsg(type) {
+      if (!selectedMsgId) return;
+      if (isFirebaseReady) {
+        if (type === 'for_me') {
+          const list = selectedMsgData.hiddenFor || [];
+          list.push(currentUser.id);
+          await db.collection("messages").doc(selectedMsgId).update({ hiddenFor: list });
+        } else {
+          await db.collection("messages").doc(selectedMsgId).update({
+            isDeleted: true,
+            text: "",
+            mediaUrl: null
+          });
+        }
+      }
+      closeWhitePopup();
+    }
+
+    async function markIncomingMessagesAsRead() {
+      if (isFirebaseReady) {
+        try {
+          const unread = await db.collection("messages").where("senderId", "==", getPartner().id).where("status", "in", ["sent", "delivered"]).get();
+          if (!unread.empty) {
+            const b = db.batch();
+            unread.forEach(d => b.update(d.ref, { status: 'read' }));
+            await b.commit();
+          }
+        } catch(e){}
+      }
+    }
+
+    function scrollChatToBottom() {
+      const c = document.getElementById("chat-messages-container");
+      c.scrollTop = c.scrollHeight;
+    }
+
+    /* 9. MEMORY VAULT (NO CAMERA FORCED) */
+    function handleVaultMedia(input) {
+      if (input.files && input.files[0]) {
+        activeVaultBlob = input.files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById("vault-preview-img").src = e.target.result;
+          document.getElementById("vault-preview-box").classList.remove("hidden");
+        };
+        reader.readAsDataURL(activeVaultBlob);
+      }
+    }
+
+    async function saveVaultMemory() {
+      const date = document.getElementById("vault-date-input").value;
+      const title = document.getElementById("vault-title-input").value.trim();
+      const note = document.getElementById("vault-note-input").value.trim();
+
+      if (!date || !title) { alert("Please provide both Date and Title."); return; }
+
+      const mediaUrl = activeVaultBlob ? document.getElementById("vault-preview-img").src : null;
+      const mem = {
+        date,
+        title,
+        note,
+        mediaUrl,
+        authorId: currentUser.id,
+        authorName: currentUser.name,
+        status: "active",
+        createdAt: Date.now()
+      };
+
+      if (isFirebaseReady) {
+        await db.collection("lifetime_memories").add({ ...mem, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_vault") || "[]");
+        mem.id = `mem_${Date.now()}`;
+        raw.push(mem);
+        localStorage.setItem("vansh_vault", JSON.stringify(raw));
+        renderVaultList(raw);
+      }
+
+      alert("Memory saved to Vault!");
+      document.getElementById("vault-title-input").value = "";
+      document.getElementById("vault-note-input").value = "";
+      document.getElementById("vault-preview-box").classList.add("hidden");
+      activeVaultBlob = null;
+    }
+
+    function listenToMemories() {
+      if (isFirebaseReady) {
+        db.collection("lifetime_memories").onSnapshot(snap => {
+          const list = [];
+          snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+          list.sort((a,b) => new Date(b.date) - new Date(a.date));
+          renderVaultList(list);
+        });
+      } else {
+        const raw = JSON.parse(localStorage.getItem("vansh_vault") || "[]");
+        renderVaultList(raw);
+      }
+    }
+
+    function renderVaultList(list) {
+      const box = document.getElementById("vault-items-container");
+      box.innerHTML = "";
+      if (list.length === 0) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted); margin-top:8px;">No memories in vault yet.</p>`;
+        return;
+      }
+
+      list.forEach(m => {
+        const card = document.createElement("div");
+        card.className = "memory-card-3d";
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; font-size:11px; opacity:0.8;">
+            <span>📅 ${m.date}</span>
+            <span>By ${m.authorName}</span>
+          </div>
+          <h4 style="font-size:15px; font-weight:700;">${escapeHtml(m.title)}</h4>
+          ${m.note ? `<p style="font-size:13px; opacity:0.9;">${escapeHtml(m.note)}</p>` : ''}
+          ${m.mediaUrl ? `<img src="${m.mediaUrl}" style="width:100\%; border-radius:10px; max-height:220px; object-fit:cover;" onclick="openLightbox('${m.mediaUrl}')">` : ''}
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    /* 10. COUPLE BUCKET LIST & DATE PLANNER */
+    async function addBucketItem() {
+      const input = document.getElementById("bucket-item-input");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      const raw = JSON.parse(localStorage.getItem("vansh_bucket") || "[]");
+      const item = { id: `b_${Date.now()}`, text, done: false, addedBy: currentUser.name };
+      raw.unshift(item);
+      localStorage.setItem("vansh_bucket", JSON.stringify(raw));
+
+      if (isFirebaseReady) {
+        try { await db.collection("system").doc("bucket_list").set({ items: raw }); } catch(e){}
+      }
+      renderBucketList(raw);
+    }
+
+    function listenToBucketList() {
+      if (isFirebaseReady) {
+        db.collection("system").doc("bucket_list").onSnapshot(doc => {
+          if (!doc.exists) return;
+          const items = doc.data().items || [];
+          localStorage.setItem("vansh_bucket", JSON.stringify(items));
+          renderBucketList(items);
+        });
+      } else {
+        renderBucketList(JSON.parse(localStorage.getItem("vansh_bucket") || "[]"));
+      }
+    }
+
+    function renderBucketList(items) {
+      const box = document.getElementById("bucket-items-container");
+      box.innerHTML = "";
+      if (items.length === 0) {
+        box.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">No goals added yet. Plan something sweet!</p>`;
+        return;
+      }
+      items.forEach(it => {
+        const row = document.createElement("div");
+        row.className = `bucket-item-row ${it.done ? 'done' : ''}`;
+        row.innerHTML = `
+          <span>${escapeHtml(it.text)} <small style="font-size:10px; opacity:0.6;">(${it.addedBy})</small></span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" ${it.done ? 'checked' : ''} onchange="toggleBucketItem('${it.id}')" style="width:18px; height:18px; cursor:pointer;">
+            <span class="material-icons" style="font-size:16px; color:#FF6B6B; cursor:pointer;" onclick="deleteBucketItem('${it.id}')">close</span>
+          </div>
+        `;
+        box.appendChild(row);
+      });
+    }
+
+    async function toggleBucketItem(id) {
+      const raw = JSON.parse(localStorage.getItem("vansh_bucket") || "[]");
+      const found = raw.find(i => i.id === id);
+      if (found) found.done = !found.done;
+      localStorage.setItem("vansh_bucket", JSON.stringify(raw));
+      if (isFirebaseReady) {
+        try { await db.collection("system").doc("bucket_list").set({ items: raw }); } catch(e){}
+      }
+      renderBucketList(raw);
+    }
+
+    async function deleteBucketItem(id) {
+      let raw = JSON.parse(localStorage.getItem("vansh_bucket") || "[]");
+      raw = raw.filter(i => i.id !== id);
+      localStorage.setItem("vansh_bucket", JSON.stringify(raw));
+      if (isFirebaseReady) {
+        try { await db.collection("system").doc("bucket_list").set({ items: raw }); } catch(e){}
+      }
+      renderBucketList(raw);
+    }
+
+    /* 11. HAPTIC LOVE BUZZ & WEBRTC CALLS */
+    function triggerLovePing() {
+      spawnFloatingHeart();
+      if ("vibrate" in navigator) {
+        navigator.vibrate([100, 50, 100, 50, 200]);
+      }
+      if (isFirebaseReady) {
+        try { db.collection("system").doc("love_ping").set({ senderId: currentUser.id, time: Date.now() }); } catch(e){}
+      }
+    }
+
+    function spawnFloatingHeart() {
+      const p = document.getElementById("heart-portal");
+      for (let i = 0; i < 15; i++) {
+        const h = document.createElement("div");
+        h.className = "floating-heart";
+        h.textContent = ["❤️", "💖", "💕", "😍"][Math.floor(Math.random() * 4)];
+        h.style.left = Math.random() * 90 + "vw";
+        h.style.animationDuration = (2 + Math.random() * 2) + "s";
+        p.appendChild(h);
+        setTimeout(() => h.remove(), 4000);
+      }
+    }
+
+    async function initiateWebRTCCall(callType) {
+      if (!isFirebaseReady) { alert("Firebase required for calling."); return; }
+      document.getElementById("call-interface").style.display = "flex";
+      localStream = await navigator.mediaDevices.getUserMedia({ video: callType === 'video', audio: true });
+      remoteStream = new MediaStream();
+      document.getElementById("local-video").srcObject = localStream;
+      document.getElementById("remote-video").srcObject = remoteStream;
+
+      peerConnection = new RTCPeerConnection(rtcServers);
+      localStream.getTracks().forEach(t => peerConnection.addTrack(t, localStream));
+      peerConnection.ontrack = e => e.streams[0].getTracks().forEach(t => remoteStream.addTrack(t));
+
+      const callDoc = db.collection("calls").doc();
+      currentCallId = callDoc.id;
+      peerConnection.onicecandidate = e => { if (e.candidate) callDoc.collection("offerCandidates").add(e.candidate.toJSON()); };
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      await callDoc.set({ offer: { type: offer.type, sdp: offer.sdp }, callType, callerId: currentUser.id, targetId: getPartner().id, status: "calling" });
+
+      callDoc.onSnapshot(snap => {
+        const d = snap.data();
+        if (!peerConnection.currentRemoteDescription && d?.answer) peerConnection.setRemoteDescription(new RTCSessionDescription(d.answer));
+        if (d?.status === "ended") hangupCall(false);
+      });
+      callDoc.collection("answerCandidates").onSnapshot(s => {
+        s.docChanges().forEach(c => { if (c.type === "added") peerConnection.addIceCandidate(new RTCIceCandidate(c.doc.data())); });
+      });
+    }
+
+    function hangupCall(notify = true) {
+      if (localStream) localStream.getTracks().forEach(t => t.stop());
+      if (peerConnection) { peerConnection.close(); peerConnection = null; }
+      if (notify && currentCallId && isFirebaseReady) db.collection("calls").doc(currentCallId).update({ status: "ended" });
+      document.getElementById("call-interface").style.display = "none";
+    }
+
+    function openLightbox(url) {
+      document.getElementById("lightbox-img").src = url;
+      document.getElementById("photo-lightbox").style.display = "flex";
+    }
+
+    function escapeHtml(t) {
+      const d = document.createElement("div");
+      d.textContent = t;
+      return d.innerHTML;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("vansh_active_user");
+      if (saved && APP_USERS[saved]) selectUser(saved);
+    });
+  </script>
+</body>
+</html>
